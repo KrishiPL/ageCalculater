@@ -1,48 +1,53 @@
-const ageCalculater = (date,month,year) => {
-let dateOfBirth = Number(date);
-let monthOfbirth = Number(month);
-let yearOfBirth = Number(year);
+const ageCalculater = (day, month, year) => {
+    // Convert inputs to numbers
+    let dayOfBirth = Number(day);
+    let monthOfBirth = Number(month);
+    let yearOfBirth = Number(year);
 
-let myDate = new Date();
-let currentYear = myDate.getFullYear();
-let currentMonth = myDate.getMonth()+1;
-let currentDate = myDate.getDate();
-let arr = [31,29,31,30,31,30,31,31,30,31,30,31];
+    // Get the current date
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth() + 1; // getMonth() returns 0-based month
+    let currentDay = today.getDate();
 
-if(dateOfBirth > currentDate){
-currentDate = currentDate + arr[currentMonth - 1];
-currentMonth = currentMonth - 1;
+    // Array of days in each month
+    let daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    // Adjust February for leap years
+    if ((currentYear % 4 === 0 && currentYear % 100 !== 0) || (currentYear % 400 === 0)) {
+        daysInMonth[1] = 29;
+    }
+
+    // Adjust the current date if necessary
+    if (dayOfBirth > currentDay) {
+        currentMonth -= 1;
+        currentDay += daysInMonth[currentMonth - 1];
+    }
+    if (monthOfBirth > currentMonth) {
+        currentYear -= 1;
+        currentMonth += 12;
+    }
+
+    // Calculate the differences
+    let years = currentYear - yearOfBirth;
+    let months = currentMonth - monthOfBirth;
+    let days = currentDay - dayOfBirth;
+
+    // Format the result
+    let age = `${days} days ${months} months ${years} years`;
+
+    return age;
+};
+
+function calculateAge() {
+    // Get input values
+    let day = document.getElementById('day').value;
+    let month = document.getElementById('month').value;
+    let year = document.getElementById('year').value;
+
+    // Calculate age
+    let age = ageCalculater(day, month, year);
+
+    // Display the result
+    document.getElementById('result').innerText = `Your age is: ${age}`;
 }
-if(monthOfbirth > currentMonth ){
-currentMonth = currentMonth + 12;
-currentYear = currentYear - 1;
-}
-
-let year1 = currentYear - yearOfBirth;
-let month1 = currentMonth - monthOfbirth;
-let date1 = currentDate - dateOfBirth;
-
-let age = `${date1} ${month1} ${year1}`;
-return age;
-};            
-
-
-
-           
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-  
-
